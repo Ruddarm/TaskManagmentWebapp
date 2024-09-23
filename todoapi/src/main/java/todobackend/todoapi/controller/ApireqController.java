@@ -4,6 +4,7 @@ import todobackend.todoapi.Entity.Task;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,10 +34,18 @@ public class ApireqController {
 
     }
 
+    @GetMapping("/getTaskByID/{id}")
+    public ResponseEntity<ApiData> getTaskByID(@PathVariable Long id){
+        try{
+            ApiData data = new ApiData(services.taskById(id));
+            return new ResponseEntity<ApiData>(data,HttpStatus.OK);
+        }catch(Exception ex){
+            return new ResponseEntity<>(new ApiData(ex.toString()),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     // Get all saved task from database
     @GetMapping("/getAllTask")
     public ResponseEntity<List<ApiData>> getAllTask() {
-        System.out.println("here bc");
         List<ApiData> allTaskApi = new ArrayList<>();
         try {
             List<Task> allTask = services.getAllTask();
@@ -55,7 +64,8 @@ public class ApireqController {
     @PostMapping("/updateTask/{id}")
     public ResponseEntity<ApiData> updateTask(@PathVariable Long id,@RequestBody Task task) {
         try {
-            ApiData data = new ApiData(services.updatedTask(id, task));
+            System.out.println("is taks is"+task.isCompleted());
+            ApiData data = new ApiData(services.updatedTask(Long.parseLong(""+id), task));
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception ex) {
 
