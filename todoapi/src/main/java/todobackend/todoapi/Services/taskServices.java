@@ -34,8 +34,10 @@ public class taskServices {
         return repo.findById(id).map(existingTask -> {
             existingTask.setTitle(updatedTask.getTitle());
             existingTask.setDescription(updatedTask.getDescription());
+            existingTask.setCompleted(updatedTask.isCompleted());
+            existingTask.setUpdatedAt(updatedTask.getUpdatedAt());
             return repo.save(existingTask);
-        }).orElseThrow(()->new EntityNotFoundException("Task not found with id : "+id));
+        }).orElseThrow(() -> new EntityNotFoundException("Task not found with id : " + id));
     }
 
     public List<Task> getTaskByStatus(boolean completed) {
