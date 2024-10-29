@@ -23,8 +23,8 @@ public class Task {
     private String description;
     @Column
     private boolean completed;
-    @Column
+    @Column(columnDefinition = "DATETIME")
     private LocalDateTime createdAt = LocalDateTime.now(); 
-    @Column// Use LocalDateTime for timestamp
+    @Column(columnDefinition = "DATETIME")// Use LocalDateTime for timestamp
     private LocalDateTime updatedAt = LocalDateTime.now();
 }
